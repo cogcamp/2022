@@ -115,7 +115,7 @@ mainScene.createBlocks = function() {
     this.blocks = this.physics.add.staticGroup();
     
     // 縦に6行
-    for(var i = 0; i < 6; i++) {
+    for(var i = 0; i < 10; i++) {
         // 横に10列
         for( var j = 0; j < 10; j++) {
             var color = blockColors[i];
