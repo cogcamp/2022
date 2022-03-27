@@ -25,12 +25,17 @@ mainScene.create = function() {
     this.createBlocks();
     
     // ライフのテキスト表示
-    
+    this.lifeText = this.add.text(30,20,'ライフ：', + this.life, {
+        font: '20px Open Sans',
+        fill:'#ff0000'
+    });
 };
 
 mainScene.update = function() {
     // ボールがシーンの最下部に到達した
-    
+    if(this.ball.y >= this.game.config.height - this.ball.width /2){
+        this.failToHit();
+    }
     
     // キーボードのカーソルオブジェクトを取得
     var cursors = this.input.keyboard.createCursorKeys();
@@ -53,7 +58,7 @@ mainScene.update = function() {
 
 mainScene.config = function() {
     // 背景色の設定
-    this.cameras.main.setBackgroundColor('#cccccc');
+    this.cameras.main.setBackgroundColor('#f0f8ff');
     
     // パドルの移動速度
     this.paddleSpeed = 10;
