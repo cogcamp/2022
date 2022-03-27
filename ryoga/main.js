@@ -64,10 +64,12 @@ mainScene.update = function() {
 
 mainScene.config = function() {
     // 背景色の設定
-    this.cameras.main.setBackgroundColor('#42daf5');
+    var backcolors = ["#fa8d87", "#87f2fa", "#fa87ee", "#8ffa87", "#e9fa87", "#f58c02", "#f502d4", "#024ff5"];
+    var random = Math.floor(Math.random() * 7);
+    this.cameras.main.setBackgroundColor(backcolors[random]);
     
     // パドルの移動速度
-    this.paddleSpeed = 10;
+    this.paddleSpeed = 6;
     
     // ボール発射の加速度
     this.ballSpeedX = 0;
@@ -82,7 +84,7 @@ mainScene.config = function() {
 
 mainScene.createBall = function() {
     // ボール作成
-    this.ball = this.physics.add.image(400, 500, 'ball2');
+    this.ball = this.physics.add.image(400, 500, 'ball1');
     this.ball.setDisplaySize(22,22);
     this.ball.setCollideWorldBounds(true);
     this.ball.setBounce(1);
@@ -90,7 +92,7 @@ mainScene.createBall = function() {
 
 mainScene.createPaddle = function() {
      // パドル作成
-    this.paddle = this.physics.add.image(400,550,'paddle1');
+    this.paddle = this.physics.add.image(400,550,'paddle2');
     this.paddle.setDisplaySize(104,24);
     this.paddle.setImmovable();
     this.paddle.isStart = true;
@@ -121,9 +123,10 @@ mainScene.createBlocks = function() {
     
     //縦に6行
     for(var i = 0;i<12;i++) {
-        //横に10列
+        
         for(var j = 0;j<10;j++) {
-            var color = blockColors[i];
+            var random = Math.floor(Math.random() * 12);
+            var color = blockColors[random];
             var block = this.blocks.create(80 + j * 64, 80 + i * 32, color);
             block.setOrigin(0,0);
             block.setDisplaySize(64,32);
@@ -178,6 +181,21 @@ mainScene.failToHit =  function () {
             loop: false,
             callbackScope: this,
         });
+    } else if (this.life == 1) {
+        /*this.lifeText = this.add.text(30,20,'ライフ：' + this.life, {
+        font: '20px Open Sans',
+        fill: '#ff1100'
+       
+    });*/
+    this.lifeText = this.add.text(30,20,'ライフ：' + this.life, {//らいふ１
+        font: '20px Open Sans',
+        fill: '#ff0d00'
+    });
+    }else if (this.life == 2) {
+        this.lifeText = this.add.text(30,20,'ライフ：' + this.life, {//らいふ２
+        font: '20px Open Sans',
+        fill: '#ffdd00'
+    });
     }
 };
 
