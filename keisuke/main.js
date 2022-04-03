@@ -16,20 +16,25 @@ mainScene.create = function() {
         if(this.paddle.isStart){
             //ボール発射
         　　this.ball.setVelocity(this.ballSpeedX,this.ballSpeedY);
-        　　this.paddle.isStart=false;
+        　　this.paddle.isStart = false;
         }
     },this);
     
     // ブロック作成
-    
+    this.createBlocks();
     
     // ライフのテキスト表示
-    
+    this.lifeText = this.add.text(30,20,'ライフ：' + this.life,{
+        font: '20px Open Sans',
+        fill: '#ff0000'
+    })
 };
 
 mainScene.update = function() {
     // ボールがシーンの最下部に到達した
-    
+    if(this.ball.y >= this.game.config.height - this.ball.width / 2) {
+        this.feilToHit();
+}
     
     // キーボードのカーソルオブジェクトを取得
     var cursors = this.input.keyboard.createCursorKeys();
@@ -91,7 +96,7 @@ mainScene.hitPaddle = function (paddle, ball) {
     ball.setVelocityX(10 * diff);
 }   else if (ball.x>paddle.x){
     //ボールがパドルの右側に衝突
-    biff = ball.x -paddle.x;
+    diff = ball.x -paddle.x;
     ball.setVelocityX(10 * diff);
 }else{
     //x方向の加速度はなし
@@ -102,8 +107,22 @@ mainScene.hitPaddle = function (paddle, ball) {
 
 mainScene.createBlocks = function() {
     // 横10列、縦6行並べる
-    
-    
+    //ブロックの色の配列
+    var blockColors = [ 'red1', 'green1', 'yellow1', 'silver1', 'blue1', 'purple1' ];
+    //物理エンジン対象固定オブジェクトグループ作成
+    this.blocks = this.physics.add.staticGroup();
+    //縦に6行
+    for(var i = 0; i < 6; i++){
+       //横に１０列
+       for( var j = 0; j < 10; j++) {
+           var color = blockColors [i] ;
+           var block = this.blocks.create(80 + j * 64, 80 + i * 32, color);
+           block.setOrigin(0,0);
+           block.setDisplaySize(64, 32);
+           block.refrshBody();
+       }
+    }
+    this.physics.add.collider(this.ball, this.blocks, this.hitBlock, null, this);
 };
 
 mainScene.hitBlock = function (ball, block) {
@@ -150,6 +169,7 @@ mainScene.failToHit =  function () {
 mainScene.gameOver = function() {
     // ゲームオーバー
     alert("ゲームオーバー");
+
     // スタートシーンに移動
     this.scene.start("startScene");
 };
