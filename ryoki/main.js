@@ -29,8 +29,12 @@ mainScene.create = function() {
     this.lifeText = this.add.text(30,20,'ライフ:' + this.life,{
         font:'20px Open Sans',
         fill:'#ff0000'
+       
     });
-    
+     this.scoreText = this.add.text(30,40,'スコア：' +　this.score,{
+         font:'20px Open Sans',
+         fill:'#ff0000'
+     });;
 };
     
     mainScene.update = function(){
@@ -81,6 +85,7 @@ mainScene.config = function() {
     
     // ライフ
     this.life = 3;
+    this.score = 0;
 };
 
 mainScene.createBall = function() {
@@ -154,6 +159,8 @@ mainScene.hitBlock = function (ball, block) {
     // 衝突したブロックを削除
     block.destroy();
     // ブロックの残りを判定
+    this.score++;
+    this.scoreText.text = 'スコア:' + this.score;
     if (this.blocks.countActive() == 0) {
         // ブロックがなくなると、0.5秒後にゲームクリア
         this.time.addEvent({
